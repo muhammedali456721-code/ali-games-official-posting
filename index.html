@@ -1,73 +1,118 @@
-
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>ALI GAMES OFFICIAL</title>
 
-    <style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body{
-            margin:0;
-            overflow:hidden;
-            font-family:Arial;
-            text-align:center;
-            background:linear-gradient(darkblue, black);
-            color:white;
-        }
+<title>ALI GAMES OFFICIAL</title>
 
-        .star{
-            position:absolute;
-            color:white;
-            animation:twinkle 2s infinite;
-        }
+<style>
 
-        @keyframes twinkle{
-            0%{opacity:0.2;}
-            50%{opacity:1;}
-            100%{opacity:0.2;}
-        }
+body{
+    margin:0;
+    min-height:100vh;
+    overflow-x:hidden;
+    font-family:Arial;
+    text-align:center;
+    background:linear-gradient(darkblue, black);
+    color:white;
+}
 
-        .gameButton{
-            font-size:30px;
-            padding:20px;
-            width:320px;
-            margin:15px;
-            border:none;
-            border-radius:20px;
-            cursor:pointer;
-            transition:0.3s;
-        }
+.star{
+    position:absolute;
+    color:gold;
+    animation:twinkle 2s infinite;
+    font-size:20px;
+}
 
-        .gameButton:hover{
-            transform:scale(1.1);
-        }
+@keyframes twinkle{
+    0%{opacity:0.2;}
+    50%{opacity:1;}
+    100%{opacity:0.2;}
+}
 
-    </style>
+.container{
+    position:relative;
+    z-index:2;
+    padding:20px;
+}
+
+h1{
+    font-size:60px;
+    color:gold;
+    text-shadow:0 0 20px yellow;
+    margin-top:20px;
+}
+
+h2{
+    color:cyan;
+}
+
+.gameButton{
+    font-size:28px;
+    padding:18px;
+    width:320px;
+    max-width:90%;
+    margin:12px;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+    transition:0.3s;
+    font-weight:bold;
+    box-shadow:0 0 20px rgba(255,255,255,0.4);
+}
+
+.gameButton:hover{
+    transform:scale(1.05);
+}
+
+.logo{
+    width:120px;
+    margin-bottom:10px;
+}
+
+@media (max-width:600px){
+
+    h1{
+        font-size:40px;
+    }
+
+    h2{
+        font-size:22px;
+    }
+
+    .gameButton{
+        width:90%;
+        font-size:22px;
+        padding:16px;
+    }
+
+    p{
+        font-size:18px;
+    }
+
+}
+
+</style>
 
 </head>
 
 <body>
 
-<div class="star" style="top:10%; left:10%;">⭐</div>
-<div class="star" style="top:20%; left:80%;">⭐</div>
-<div class="star" style="top:40%; left:30%;">⭐</div>
-<div class="star" style="top:60%; left:90%;">⭐</div>
-<div class="star" style="top:80%; left:15%;">⭐</div>
-<div class="star" style="top:70%; left:60%;">⭐</div>
+<div class="star" style="top:10%;left:10%">⭐</div>
+<div class="star" style="top:20%;left:80%">⭐</div>
+<div class="star" style="top:40%;left:20%">⭐</div>
+<div class="star" style="top:60%;left:90%">⭐</div>
+<div class="star" style="top:80%;left:15%">⭐</div>
+<div class="star" style="top:70%;left:60%">⭐</div>
+<div class="star" style="top:30%;left:50%">⭐</div>
+<div class="star" style="top:90%;left:70%">⭐</div>
 
-<h1 style="
-font-size:70px;
-color:gold;
-text-shadow:0 0 20px yellow;
-margin-top:30px;
-">
-🎮 ALI GAMES 🎮
-</h1>
+<div class="container">
 
-<h2 style="color:cyan;">
-Official Game Website
-</h2>
+<h1>🎮 ALI GAMES 🎮</h1>
+
+<h2>Official Game Website</h2>
 
 <button class="gameButton"
 style="background:red;color:white;"
@@ -105,16 +150,11 @@ onclick="window.location.href='chess.html'">
 NEW GAMES COMING SOON!
 </h2>
 
-<p style="font-size:22px;">
-New games every Saturday!
-</p>
+<p>New games every Saturday!</p>
 
-<br>
+<p>Made by Muhammad Ali 😎</p>
 
-<p>
-Made by Muhammad Ali 😎
-</p>
+</div>
 
 </body>
-
 </html>
