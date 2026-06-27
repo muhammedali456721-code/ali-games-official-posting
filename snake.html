@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ALI SNAKE</title>
+</head>
+
+<body style="background:black; color:white; text-align:center; font-family:Arial;">
+
+<h1>🐍 ALI SNAKE 🐍</h1>
+
+<p>Score: <span id="score">0</span></p>
+
+<button onclick="startGame()">
+START GAME
+</button>
+
+<br><br>
+
+<canvas id="game" width="400" height="400"
+style="background:green; border:4px solid white;">
+</canvas>
+
+<script>
+
+let canvas = document.getElementById("game");
+let ctx = canvas.getContext("2d");
+
+let snake = [];
+let dx = 20;
+let dy = 0;
+
+let foodX = 100;
+let foodY = 100;
+
+let score = 0;
+let game;
+
+function startGame() {
+
+    snake = [
+        {x:200, y:200},
+        {x:180, y:200},
+        {x:160, y:200}
+    ];
+
+    dx = 20;
+    dy = 0;
+
+    score = 0;
+
+    document.getElementById("score").innerHTML = score;
+
+    clearInterval(game);
+
+    game = setInterval(draw, 180);
+}
+
+document.addEventListener("keydown", function(event) {
+
+    if (event.key == "ArrowUp" && dy == 0) {
+        dx = 0;
+        dy = -20;
+    }
+
+    if (event.key == "ArrowDown" && dy == 0) {
+        dx = 0;
+        dy = 20;
+    }
+
+    if (event.key == "ArrowLeft" && dx == 0) {
+        dx = -20;
+        dy = 0;
+    }
+
+    if (event.key == "ArrowRight" && dx == 0) {
+        dx = 20;
+        dy = 0;
+    }
+
+});
+
+function draw() {
+
+    ctx.fillStyle = "green";
+    ctx.fillRect(0,0,400,400);
+
+    let head = {
+        x: snake[0].x + dx,
+        y: snake[0].y + dy
+    };
+
+    snake.unshift(head);
+
+    if (head.x == foodX && head.y == foodY) {
+
+        score++;
+
+        document.getElementById("score").innerHTML = score;
+
+        foodX = Math.floor(Math.random()*20)*20;
+        foodY = Math.floor(Math.random()*20)*20;
+
+    } else {
+
+        snake.pop();
+    }
+
+    for (let i = 0; i < snake.length; i++) {
+
+        if (i == 0) {
+            ctx.fillStyle = "yellow";
+        } else {
+            ctx.fillStyle = "lime";
+        }
+
+        ctx.fillRect(
+            snake[i].x,
+            snake[i].y,
+            20,
+            20
+        );
+    }
+
+    ctx.fillStyle = "red";
+    ctx.fillRect(foodX, foodY, 20, 20);
+
+    if (
+        head.x < 0 ||
+        head.x >= 400 ||
+        head.y < 0 ||
+        head.y >= 400
+    ) {
+        gameOver();
+    }
+
+    for (let i = 1; i < snake.length; i++) {
+
+        if (
+            head.x == snake[i].x &&
+            head.y == snake[i].y
+        ) {
+            gameOver();
+        }
+    }
+
+}
+
+function gameOver() {
+
+    clearInterval(game);
+
+    alert("Game Over! Score: " + score);
+}
+
+</script>
+
+</body>
+
+</html>

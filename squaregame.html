@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ALI GAMES</title>
+</head>
+
+<body style="background:black; color:white; text-align:center; font-family:Arial;">
+
+    <h1>🎮 ALI GAMES 🎮</h1>
+
+    <h2>Catch the Red Square!</h2>
+
+    <p>Score: <span id="score">0</span></p>
+
+    <p>Time: <span id="time">30</span></p>
+
+    <button id="startButton" onclick="startGame()">
+        START GAME
+    </button>
+
+    <div id="box"
+    style="
+    width:60px;
+    height:60px;
+    background:red;
+    position:absolute;
+    top:200px;
+    left:200px;
+    display:none;
+    cursor:pointer;
+    "
+    onclick="moveBox()">
+    </div>
+
+    <script>
+
+    let score = 0;
+    let time = 30;
+    let timer;
+
+    function startGame() {
+
+        score = 0;
+        time = 30;
+
+        document.getElementById("score").innerHTML = score;
+        document.getElementById("time").innerHTML = time;
+
+        document.getElementById("box").style.display = "block";
+
+        document.getElementById("startButton").style.display = "none";
+
+        timer = setInterval(countdown, 1000);
+    }
+
+    function countdown() {
+
+        time--;
+
+        document.getElementById("time").innerHTML = time;
+
+        if (time <= 0) {
+
+            clearInterval(timer);
+
+            document.getElementById("box").style.display = "none";
+
+            alert("Game Over! Your score was " + score);
+
+            document.getElementById("startButton").innerHTML = "PLAY AGAIN";
+
+            document.getElementById("startButton").style.display = "inline";
+        }
+    }
+
+    function moveBox() {
+
+        score++;
+
+        document.getElementById("score").innerHTML = score;
+
+        let x = Math.floor(Math.random() * 700);
+        let y = Math.floor(Math.random() * 400);
+
+        document.getElementById("box").style.left = x + "px";
+        document.getElementById("box").style.top = y + "px";
+
+        document.body.style.background = "darkred";
+
+        setTimeout(function() {
+            document.body.style.background = "black";
+        }, 100);
+    }
+
+    </script>
+
+</body>
+
+</html>
