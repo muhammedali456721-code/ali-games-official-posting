@@ -1,5 +1,7 @@
+```html
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,8 +12,9 @@
 
 body{
     margin:0;
-    min-height:100vh;
+    padding-bottom:150px;
     overflow-x:hidden;
+    overflow-y:auto;
     font-family:Arial;
     text-align:center;
     background:linear-gradient(darkblue, black);
@@ -19,78 +22,94 @@ body{
 }
 
 .star{
-    position:absolute;
-    color:gold;
+    position:fixed;
+    color:white;
     animation:twinkle 2s infinite;
-    font-size:20px;
+    pointer-events:none;
 }
 
 @keyframes twinkle{
-    0%{opacity:0.2;}
-    50%{opacity:1;}
-    100%{opacity:0.2;}
-}
 
-.container{
-    position:relative;
-    z-index:2;
-    padding:20px;
-}
+    0%{
+        opacity:0.2;
+    }
 
-h1{
-    font-size:60px;
-    color:gold;
-    text-shadow:0 0 20px yellow;
-    margin-top:20px;
-}
+    50%{
+        opacity:1;
+    }
 
-h2{
-    color:cyan;
-}
-
-.gameButton{
-    font-size:28px;
-    padding:18px;
-    width:320px;
-    max-width:90%;
-    margin:12px;
-    border:none;
-    border-radius:20px;
-    cursor:pointer;
-    transition:0.3s;
-    font-weight:bold;
-    box-shadow:0 0 20px rgba(255,255,255,0.4);
-}
-
-.gameButton:hover{
-    transform:scale(1.05);
+    100%{
+        opacity:0.2;
+    }
 }
 
 .logo{
-    width:120px;
-    margin-bottom:10px;
+    font-size:60px;
+    color:gold;
+    text-shadow:0 0 20px yellow;
+    margin-top:30px;
 }
 
-@media (max-width:600px){
+.subtitle{
+    color:cyan;
+    font-size:28px;
+}
 
-    h1{
-        font-size:40px;
+.gameButton{
+
+    width:90%;
+    max-width:350px;
+
+    font-size:28px;
+
+    padding:20px;
+
+    margin:15px;
+
+    border:none;
+
+    border-radius:20px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.gameButton:hover{
+
+    transform:scale(1.05);
+}
+
+.footer{
+
+    margin-top:50px;
+
+    color:orange;
+
+    font-size:22px;
+}
+
+.credit{
+
+    margin-top:40px;
+
+    font-size:18px;
+}
+
+@media(max-width:600px){
+
+    .logo{
+        font-size:42px;
     }
 
-    h2{
+    .subtitle{
         font-size:22px;
     }
 
     .gameButton{
-        width:90%;
         font-size:22px;
-        padding:16px;
+        width:92%;
     }
-
-    p{
-        font-size:18px;
-    }
-
 }
 
 </style>
@@ -99,25 +118,29 @@ h2{
 
 <body>
 
-<div class="star" style="top:10%;left:10%">⭐</div>
-<div class="star" style="top:20%;left:80%">⭐</div>
-<div class="star" style="top:40%;left:20%">⭐</div>
-<div class="star" style="top:60%;left:90%">⭐</div>
-<div class="star" style="top:80%;left:15%">⭐</div>
-<div class="star" style="top:70%;left:60%">⭐</div>
-<div class="star" style="top:30%;left:50%">⭐</div>
-<div class="star" style="top:90%;left:70%">⭐</div>
+<div class="star" style="top:10%; left:10%;">⭐</div>
+<div class="star" style="top:20%; left:80%;">⭐</div>
+<div class="star" style="top:40%; left:30%;">⭐</div>
+<div class="star" style="top:60%; left:90%;">⭐</div>
+<div class="star" style="top:80%; left:15%;">⭐</div>
+<div class="star" style="top:70%; left:60%;">⭐</div>
+<div class="star" style="top:30%; left:55%;">⭐</div>
+<div class="star" style="top:85%; left:80%;">⭐</div>
 
-<div class="container">
+<h1 class="logo">
+🎮 ALI GAMES 🎮
+</h1>
 
-<h1>🎮 ALI GAMES 🎮</h1>
-
-<h2>Official Game Website</h2>
+<h2 class="subtitle">
+Official Game Website
+</h2>
 
 <button class="gameButton"
 style="background:red;color:white;"
 onclick="window.location.href='squaregame.html'">
+
 🟥 Square Game
+
 </button>
 
 <br>
@@ -125,7 +148,9 @@ onclick="window.location.href='squaregame.html'">
 <button class="gameButton"
 style="background:green;color:white;"
 onclick="window.location.href='snake.html'">
+
 🐍 Snake Game
+
 </button>
 
 <br>
@@ -133,7 +158,9 @@ onclick="window.location.href='snake.html'">
 <button class="gameButton"
 style="background:gold;color:black;"
 onclick="window.location.href='flappy.html'">
+
 🐦 Flappy Bird
+
 </button>
 
 <br>
@@ -141,20 +168,30 @@ onclick="window.location.href='flappy.html'">
 <button class="gameButton"
 style="background:purple;color:white;"
 onclick="window.location.href='chess.html'">
+
 ♟️ Chess
+
 </button>
 
-<br><br>
+<div class="footer">
 
-<h2 style="color:orange;">
 NEW GAMES COMING SOON!
-</h2>
-
-<p>New games every Saturday!</p>
-
-<p>Made by Muhammad Ali 😎</p>
 
 </div>
 
+<p style="font-size:22px;">
+New games every Saturday!
+</p>
+
+<div class="credit">
+
+Made by Muhammad Ali 😎
+
+</div>
+
+<br><br><br><br><br><br>
+
 </body>
+
 </html>
+```
