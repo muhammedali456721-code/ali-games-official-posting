@@ -9,15 +9,22 @@
 background:skyblue;
 text-align:center;
 font-family:Arial;
+margin:0;
 ">
 
 <h1>🐦 ALI FLAPPY BIRD 🐦</h1>
 
 <p>Press SPACE to flap!</p>
 
-<p>Score: <span id="score">0</span></p>
+<h2>Score: <span id="score">0</span></h2>
 
-<button id="startButton" onclick="startGame()">
+<button id="startButton" onclick="startGame()"
+style="
+font-size:25px;
+padding:10px 20px;
+border-radius:10px;
+cursor:pointer;
+">
 START GAME
 </button>
 
@@ -49,7 +56,7 @@ let score = 0;
 let gameRunning = false;
 let game;
 
-function startGame() {
+function startGame(){
 
     document.getElementById("startButton").style.display = "none";
 
@@ -58,7 +65,7 @@ function startGame() {
 
     pipeX = 500;
 
-    gapY = Math.random() * 180 + 150;
+    gapY = Math.random() * 250 + 120;
 
     score = 0;
 
@@ -77,12 +84,12 @@ document.addEventListener("keydown", function(event){
 
         event.preventDefault();
 
-        velocity = -6;
+        velocity = -7;
     }
 
 });
 
-function draw() {
+function draw(){
 
     ctx.clearRect(0,0,500,600);
 
@@ -90,22 +97,34 @@ function draw() {
     ctx.fillStyle = "skyblue";
     ctx.fillRect(0,0,500,600);
 
+    /* Clouds */
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.arc(80,80,25,0,Math.PI*2);
+    ctx.arc(110,80,25,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(350,120,20,0,Math.PI*2);
+    ctx.arc(380,120,20,0,Math.PI*2);
+    ctx.fill();
+
     /* Ground */
     ctx.fillStyle = "green";
     ctx.fillRect(0,550,500,50);
 
-    /* Bird movement */
+    /* Bird physics */
     velocity += gravity;
     birdY += velocity;
 
     /* Pipes move */
-    pipeX -= 2;
+    pipeX -= 3;
 
-    if(pipeX < -70){
+    if(pipeX < -80){
 
         pipeX = 500;
 
-        gapY = Math.random() * 180 + 150;
+        gapY = Math.random() * 250 + 120;
 
         score++;
 
@@ -115,33 +134,42 @@ function draw() {
     /* Pipes */
     ctx.fillStyle = "green";
 
-    ctx.fillRect(pipeX,0,70,gapY-90);
+    ctx.fillRect(pipeX,0,80,gapY-90);
 
-    ctx.fillRect(pipeX,gapY+90,70,550);
+    ctx.fillRect(pipeX,gapY+90,80,550);
 
-    /* Bird */
+    /* Bird body */
     ctx.fillStyle = "yellow";
 
     ctx.beginPath();
-    ctx.arc(birdX,birdY,15,0,Math.PI*2);
+    ctx.arc(birdX,birdY,18,0,Math.PI*2);
     ctx.fill();
 
     /* Eye */
     ctx.fillStyle = "black";
 
     ctx.beginPath();
-    ctx.arc(birdX+5,birdY-5,3,0,Math.PI*2);
+    ctx.arc(birdX+6,birdY-5,3,0,Math.PI*2);
     ctx.fill();
 
-    /* Collision with top or ground */
-    if(birdY < 15 || birdY > 535){
+    /* Beak */
+    ctx.fillStyle = "orange";
+
+    ctx.beginPath();
+    ctx.moveTo(birdX+15,birdY);
+    ctx.lineTo(birdX+28,birdY-4);
+    ctx.lineTo(birdX+28,birdY+4);
+    ctx.fill();
+
+    /* Top and ground collision */
+    if(birdY < 18 || birdY > 532){
         gameOver();
     }
 
     /* Pipe collision */
     if(
-        birdX + 15 > pipeX &&
-        birdX - 15 < pipeX + 70
+        birdX + 18 > pipeX &&
+        birdX - 18 < pipeX + 80
     ){
 
         if(
