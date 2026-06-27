@@ -6,9 +6,10 @@
 <title>ALI FLAPPY BIRD</title>
 
 <style>
+
 body{
     margin:0;
-    background:skyblue;
+    background:linear-gradient(skyblue,#87CEEB);
     text-align:center;
     font-family:Arial;
     overflow:hidden;
@@ -23,17 +24,27 @@ h1{
 
 canvas{
     border:4px solid black;
-    background:#87CEEB;
+    background:skyblue;
     width:95vw;
     max-width:400px;
     height:auto;
     touch-action:none;
 }
 
-p{
-    color:black;
-    font-weight:bold;
+#menu{
+    display:none;
+    margin-top:10px;
 }
+
+button{
+    font-size:20px;
+    padding:12px 20px;
+    margin:5px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
 </style>
 </head>
 
@@ -41,46 +52,81 @@ p{
 
 <h1>🐦 ALI FLAPPY BIRD 🐦</h1>
 
-<p>Tap the screen to jump!</p>
+<p>Tap to Jump!</p>
 
 <canvas id="game" width="400" height="600"></canvas>
+
+<div id="menu">
+    <h2>Game Over!</h2>
+
+    <button onclick="restartGame()">
+        🔄 Play Again
+    </button>
+
+    <button onclick="window.location.href='index.html'">
+        🏠 ALI GAMES
+    </button>
+</div>
 
 <script>
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
-let bird = {
-    x:80,
-    y:300,
-    size:18,
-    velocity:0
-};
+let bird;
+let pipes;
+let score;
+let gameOver;
 
 let gravity = 0.45;
 let jumpPower = -9;
 
-let pipes = [];
-let score = 0;
+let pipeTimer = 0;
+let pipeDelay = 120;
+
+function startGame(){
+
+    bird = {
+        x:80,
+        y:300,
+        size:18,
+        velocity:0
+    };
+
+    pipes = [];
+
+    score = 0;
+
+    pipeTimer = 0;
+
+    gameOver = false;
+
+    document.getElementById("menu").style.display = "none";
+
+    createPipe();
+}
 
 function createPipe(){
 
-    let gap = 170;
-    let topHeight = Math.random()*250 + 50;
+    let gap = 180;
+
+    let topHeight =
+    Math.random()*180 + 80;
 
     pipes.push({
         x:400,
         top:topHeight,
-        bottom:topHeight + gap
+        bottom:topHeight + gap,
+        scored:false
     });
 }
 
-createPipe();
-
-setInterval(createPipe, 1800);
-
 function flap(e){
+
     if(e) e.preventDefault();
+
+    if(gameOver) return;
+
     bird.velocity = jumpPower;
 }
 
@@ -89,18 +135,31 @@ document.addEventListener("keydown", flap);
 canvas.addEventListener("click", flap);
 
 canvas.addEventListener("touchstart", function(e){
+
     e.preventDefault();
+
     flap();
+
 });
 
 function update(){
 
+    if(gameOver) return;
+
+    pipeTimer++;
+
+    if(pipeTimer >= pipeDelay){
+
+        createPipe();
+
+        pipeTimer = 0;
+    }
+
     bird.velocity += gravity;
+
     bird.y += bird.velocity;
 
-    for(let i=0;i<pipes.length;i++){
-
-        let p = pipes[i];
+    for(let p of pipes){
 
         p.x -= 3;
 
@@ -112,31 +171,41 @@ function update(){
                 bird.y + bird.size > p.bottom
             )
         ){
-            resetGame();
+            endGame();
         }
 
-        if(p.x + 60 < bird.x && !p.scored){
+        if(
+            p.x + 60 < bird.x &&
+            !p.scored
+        ){
             p.scored = true;
             score++;
         }
     }
 
-    pipes = pipes.filter(p => p.x > -60);
+    pipes = pipes.filter(
+        p => p.x > -60
+    );
 
-    if(bird.y < 0 || bird.y > 600){
-        resetGame();
+    if(
+        bird.y < 0 ||
+        bird.y > 600
+    ){
+        endGame();
     }
 }
 
-function resetGame(){
+function endGame(){
 
-    bird.y = 300;
-    bird.velocity = 0;
+    gameOver = true;
 
-    pipes = [];
-    score = 0;
+    document.getElementById("menu").style.display =
+    "block";
+}
 
-    createPipe();
+function restartGame(){
+
+    startGame();
 }
 
 function draw(){
@@ -147,19 +216,25 @@ function draw(){
 
     for(let p of pipes){
 
-        ctx.fillRect(p.x,0,60,p.top);
+        ctx.fillRect(
+            p.x,
+            0,
+            60,
+            p.top
+        );
 
         ctx.fillRect(
             p.x,
             p.bottom,
             60,
-            600-p.bottom
+            600 - p.bottom
         );
     }
 
     ctx.fillStyle = "yellow";
 
     ctx.beginPath();
+
     ctx.arc(
         bird.x,
         bird.y,
@@ -167,18 +242,30 @@ function draw(){
         0,
         Math.PI*2
     );
+
     ctx.fill();
 
     ctx.fillStyle = "black";
+
     ctx.font = "30px Arial";
-    ctx.fillText("Score: " + score, 10, 40);
+
+    ctx.fillText(
+        "Score: " + score,
+        10,
+        40
+    );
 }
 
 function gameLoop(){
+
     update();
+
     draw();
+
     requestAnimationFrame(gameLoop);
 }
+
+startGame();
 
 gameLoop();
 
