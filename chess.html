@@ -1,184 +1,199 @@
+```html
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>ALI GAMES CHESS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALI CHESS V2</title>
 
-    <style>
+<style>
 
-        body{
-            margin:0;
-            font-family:Arial;
-            text-align:center;
-            background:linear-gradient(darkblue, black);
-            color:white;
-        }
+body{
+    margin:0;
+    font-family:Arial;
+    text-align:center;
+    background:linear-gradient(darkblue, black);
+    color:white;
+}
 
-        h1{
-            color:gold;
-            text-shadow:0 0 20px yellow;
-            margin-top:20px;
-        }
+h1{
+    color:gold;
+    text-shadow:0 0 20px yellow;
+}
 
-        table{
-            margin:auto;
-            border-collapse:collapse;
-            box-shadow:0 0 20px white;
-        }
+#board{
+    width:95vw;
+    max-width:560px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(8,1fr);
+    border:4px solid white;
+    box-shadow:0 0 20px white;
+}
 
-        td{
-            width:70px;
-            height:70px;
-            font-size:45px;
-            text-align:center;
-        }
+.square{
+    aspect-ratio:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:42px;
+    cursor:pointer;
+    user-select:none;
+}
 
-        .white{
-            background:#f0d9b5;
-        }
+.white{
+    background:#f0d9b5;
+}
 
-        .black{
-            background:#b58863;
-        }
+.black{
+    background:#b58863;
+}
 
-        button{
-            font-size:25px;
-            padding:15px;
-            border:none;
-            border-radius:15px;
-            cursor:pointer;
-            margin-top:20px;
-        }
+.selected{
+    background:yellow !important;
+}
 
-        .star{
-            position:absolute;
-            color:white;
-            animation:twinkle 2s infinite;
-        }
+button{
+    font-size:22px;
+    padding:12px 20px;
+    margin-top:20px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
 
-        @keyframes twinkle{
-            0%{opacity:0.2;}
-            50%{opacity:1;}
-            100%{opacity:0.2;}
-        }
+@media(max-width:600px){
 
-    </style>
+    .square{
+        font-size:28px;
+    }
 
+}
+
+</style>
 </head>
 
 <body>
 
-<div class="star" style="top:10%;left:10%;">⭐</div>
-<div class="star" style="top:20%;left:80%;">⭐</div>
-<div class="star" style="top:60%;left:20%;">⭐</div>
-<div class="star" style="top:70%;left:85%;">⭐</div>
+<h1>♟️ ALI CHESS V2 ♟️</h1>
 
-<h1>♟️ ALI GAMES CHESS ♟️</h1>
+<h2 id="turn">White's Turn</h2>
 
-<h2>Version 1</h2>
-
-<table>
-
-<tr>
-<td class="white">♜</td>
-<td class="black">♞</td>
-<td class="white">♝</td>
-<td class="black">♛</td>
-<td class="white">♚</td>
-<td class="black">♝</td>
-<td class="white">♞</td>
-<td class="black">♜</td>
-</tr>
-
-<tr>
-<td class="black">♟</td>
-<td class="white">♟</td>
-<td class="black">♟</td>
-<td class="white">♟</td>
-<td class="black">♟</td>
-<td class="white">♟</td>
-<td class="black">♟</td>
-<td class="white">♟</td>
-</tr>
-
-<tr>
-<td class="white"></td>
-<td class="black"></td>
-<td class="white"></td>
-<td class="black"></td>
-<td class="white"></td>
-<td class="black"></td>
-<td class="white"></td>
-<td class="black"></td>
-</tr>
-
-<tr>
-<td class="black"></td>
-<td class="white"></td>
-<td class="black"></td>
-<td class="white"></td>
-<td class="black"></td>
-<td class="white"></td>
-<td class="black"></td>
-<td class="white"></td>
-</tr>
-
-<tr>
-<td class="white"></td>
-<td class="black"></td>
-<td class="white"></td>
-<td class="black"></td>
-<td class="white"></td>
-<td class="black"></td>
-<td class="white"></td>
-<td class="black"></td>
-</tr>
-
-<tr>
-<td class="black"></td>
-<td class="white"></td>
-<td class="black"></td>
-<td class="white"></td>
-<td class="black"></td>
-<td class="white"></td>
-<td class="black"></td>
-<td class="white"></td>
-</tr>
-
-<tr>
-<td class="white">♙</td>
-<td class="black">♙</td>
-<td class="white">♙</td>
-<td class="black">♙</td>
-<td class="white">♙</td>
-<td class="black">♙</td>
-<td class="white">♙</td>
-<td class="black">♙</td>
-</tr>
-
-<tr>
-<td class="black">♖</td>
-<td class="white">♘</td>
-<td class="black">♗</td>
-<td class="white">♕</td>
-<td class="black">♔</td>
-<td class="white">♗</td>
-<td class="black">♘</td>
-<td class="white">♖</td>
-</tr>
-
-</table>
-
-<br>
+<div id="board"></div>
 
 <button onclick="window.location.href='index.html'">
 🏠 Back to ALI GAMES
 </button>
 
-<br><br>
+<script>
 
-<p>Made by Muhammad Ali 😎</p>
+let board = [
+
+["♜","♞","♝","♛","♚","♝","♞","♜"],
+["♟","♟","♟","♟","♟","♟","♟","♟"],
+["","","","","","","",""],
+["","","","","","","",""],
+["","","","","","","",""],
+["","","","","","","",""],
+["♙","♙","♙","♙","♙","♙","♙","♙"],
+["♖","♘","♗","♕","♔","♗","♘","♖"]
+
+];
+
+let selected = null;
+let whiteTurn = true;
+
+function isWhite(piece){
+    return "♔♕♖♗♘♙".includes(piece);
+}
+
+function isBlack(piece){
+    return "♚♛♜♝♞♟".includes(piece);
+}
+
+function clickSquare(r,c){
+
+    let piece = board[r][c];
+
+    if(selected == null){
+
+        if(piece == "") return;
+
+        if(whiteTurn && !isWhite(piece)) return;
+
+        if(!whiteTurn && !isBlack(piece)) return;
+
+        selected = {
+            row:r,
+            col:c
+        };
+
+    }else{
+
+        board[r][c] =
+        board[selected.row][selected.col];
+
+        board[selected.row][selected.col] = "";
+
+        selected = null;
+
+        whiteTurn = !whiteTurn;
+
+        document.getElementById("turn").innerHTML =
+        whiteTurn ?
+        "White's Turn" :
+        "Black's Turn";
+    }
+
+    drawBoard();
+}
+
+function drawBoard(){
+
+    let boardDiv =
+    document.getElementById("board");
+
+    boardDiv.innerHTML = "";
+
+    for(let r=0;r<8;r++){
+
+        for(let c=0;c<8;c++){
+
+            let square =
+            document.createElement("div");
+
+            square.classList.add("square");
+
+            if((r+c)%2==0){
+                square.classList.add("white");
+            }else{
+                square.classList.add("black");
+            }
+
+            if(selected &&
+               selected.row==r &&
+               selected.col==c){
+
+                square.classList.add("selected");
+            }
+
+            square.innerHTML =
+            board[r][c];
+
+            square.onclick =
+            function(){
+                clickSquare(r,c);
+            };
+
+            boardDiv.appendChild(square);
+        }
+    }
+}
+
+drawBoard();
+
+</script>
 
 </body>
-
 </html>
+
