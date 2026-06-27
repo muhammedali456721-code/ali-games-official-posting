@@ -1,100 +1,168 @@
+```html
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>ALI GAMES</title>
-</head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALI SQUARE GAME</title>
 
-<body style="background:black; color:white; text-align:center; font-family:Arial;">
+<style>
 
-    <h1>🎮 ALI GAMES 🎮</h1>
+body{
+    margin:0;
+    background:black;
+    color:white;
+    text-align:center;
+    font-family:Arial;
+    overflow:hidden;
+}
 
-    <h2>Catch the Red Square!</h2>
+h1{
+    color:gold;
+}
 
-    <p>Score: <span id="score">0</span></p>
+button{
+    font-size:22px;
+    padding:12px 25px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
 
-    <p>Time: <span id="time">30</span></p>
+#gameArea{
+    position:relative;
+    width:95vw;
+    max-width:500px;
+    height:500px;
+    margin:auto;
+    border:4px solid white;
+    background:#111;
+    overflow:hidden;
+}
 
-    <button id="startButton" onclick="startGame()">
-        START GAME
-    </button>
-
-    <div id="box"
-    style="
+#box{
     width:60px;
     height:60px;
     background:red;
     position:absolute;
-    top:200px;
-    left:200px;
     display:none;
     cursor:pointer;
-    "
-    onclick="moveBox()">
-    </div>
+    border-radius:10px;
+    box-shadow:0 0 15px red;
+}
 
-    <script>
+@media (max-width:600px){
 
-    let score = 0;
-    let time = 30;
-    let timer;
-
-    function startGame() {
-
-        score = 0;
-        time = 30;
-
-        document.getElementById("score").innerHTML = score;
-        document.getElementById("time").innerHTML = time;
-
-        document.getElementById("box").style.display = "block";
-
-        document.getElementById("startButton").style.display = "none";
-
-        timer = setInterval(countdown, 1000);
+    #gameArea{
+        height:350px;
     }
 
-    function countdown() {
-
-        time--;
-
-        document.getElementById("time").innerHTML = time;
-
-        if (time <= 0) {
-
-            clearInterval(timer);
-
-            document.getElementById("box").style.display = "none";
-
-            alert("Game Over! Your score was " + score);
-
-            document.getElementById("startButton").innerHTML = "PLAY AGAIN";
-
-            document.getElementById("startButton").style.display = "inline";
-        }
+    #box{
+        width:50px;
+        height:50px;
     }
 
-    function moveBox() {
+}
 
-        score++;
+</style>
 
-        document.getElementById("score").innerHTML = score;
+</head>
 
-        let x = Math.floor(Math.random() * 700);
-        let y = Math.floor(Math.random() * 400);
+<body>
 
-        document.getElementById("box").style.left = x + "px";
-        document.getElementById("box").style.top = y + "px";
+<h1>🟥 ALI SQUARE GAME 🟥</h1>
 
-        document.body.style.background = "darkred";
+<h2>Catch the Red Square!</h2>
 
-        setTimeout(function() {
-            document.body.style.background = "black";
-        }, 100);
+<p>Score: <span id="score">0</span></p>
+
+<p>Time: <span id="time">30</span></p>
+
+<button id="startButton" onclick="startGame()">
+START GAME
+</button>
+
+<br><br>
+
+<div id="gameArea">
+
+    <div id="box" onclick="moveBox()"></div>
+
+</div>
+
+<script>
+
+let score = 0;
+let time = 30;
+let timer;
+
+function startGame(){
+
+    score = 0;
+    time = 30;
+
+    document.getElementById("score").innerHTML = score;
+    document.getElementById("time").innerHTML = time;
+
+    document.getElementById("box").style.display = "block";
+
+    document.getElementById("startButton").style.display = "none";
+
+    moveBox();
+
+    clearInterval(timer);
+
+    timer = setInterval(countdown,1000);
+}
+
+function countdown(){
+
+    time--;
+
+    document.getElementById("time").innerHTML = time;
+
+    if(time <= 0){
+
+        clearInterval(timer);
+
+        document.getElementById("box").style.display = "none";
+
+        alert("Game Over! Score: " + score);
+
+        document.getElementById("startButton").innerHTML = "PLAY AGAIN";
+
+        document.getElementById("startButton").style.display = "inline";
     }
+}
 
-    </script>
+function moveBox(){
+
+    score++;
+
+    document.getElementById("score").innerHTML = score;
+
+    let area = document.getElementById("gameArea");
+    let box = document.getElementById("box");
+
+    let maxX = area.clientWidth - box.offsetWidth;
+    let maxY = area.clientHeight - box.offsetHeight;
+
+    let x = Math.floor(Math.random() * maxX);
+    let y = Math.floor(Math.random() * maxY);
+
+    box.style.left = x + "px";
+    box.style.top = y + "px";
+
+    document.body.style.background = "darkred";
+
+    setTimeout(function(){
+        document.body.style.background = "black";
+    },100);
+}
+
+</script>
 
 </body>
 
 </html>
+```
