@@ -4,21 +4,25 @@
 
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ALI CHESS V2</title>
+<title>ALI CHESS</title>
 
 <style>
 
 body{
     margin:0;
-    font-family:Arial;
-    text-align:center;
-    background:linear-gradient(darkblue, black);
+    background:linear-gradient(darkblue,black);
     color:white;
+    text-align:center;
+    font-family:Arial;
 }
 
 h1{
     color:gold;
     text-shadow:0 0 20px yellow;
+}
+
+#turn{
+    color:cyan;
 }
 
 #board{
@@ -36,7 +40,7 @@ h1{
     display:flex;
     justify-content:center;
     align-items:center;
-    font-size:42px;
+    font-size:40px;
     cursor:pointer;
     user-select:none;
 }
@@ -54,12 +58,11 @@ h1{
 }
 
 button{
-    font-size:22px;
-    padding:12px 20px;
     margin-top:20px;
+    font-size:20px;
+    padding:12px 20px;
     border:none;
     border-radius:10px;
-    cursor:pointer;
 }
 
 @media(max-width:600px){
@@ -75,28 +78,28 @@ button{
 
 <body>
 
-<h1>♟️ ALI CHESS V2 ♟️</h1>
+<h1>♟️ ALI CHESS ♟️</h1>
 
 <h2 id="turn">White's Turn</h2>
 
 <div id="board"></div>
 
 <button onclick="window.location.href='index.html'">
-🏠 Back to ALI GAMES
+🏠 ALI GAMES
 </button>
 
 <script>
 
 let board = [
 
-["♜","♞","♝","♛","♚","♝","♞","♜"],
+["♜","♞","","","","","♞","♜"],
 ["♟","♟","♟","♟","♟","♟","♟","♟"],
 ["","","","","","","",""],
 ["","","","","","","",""],
 ["","","","","","","",""],
 ["","","","","","","",""],
 ["♙","♙","♙","♙","♙","♙","♙","♙"],
-["♖","♘","♗","♕","♔","♗","♘","♖"]
+["♖","♘","","","","","♘","♖"]
 
 ];
 
@@ -111,17 +114,79 @@ function isBlack(piece){
     return "♚♛♜♝♞♟".includes(piece);
 }
 
+function legalMove(sr,sc,r,c,piece){
+
+    let dr = r - sr;
+    let dc = c - sc;
+
+    if(piece=="♙"){
+
+        if(sc==c && dr==-1 && board[r][c]=="")
+            return true;
+
+        if(sr==6 &&
+           sc==c &&
+           dr==-2 &&
+           board[5][c]=="" &&
+           board[4][c]=="")
+            return true;
+
+        if(Math.abs(dc)==1 &&
+           dr==-1 &&
+           isBlack(board[r][c]))
+            return true;
+    }
+
+    if(piece=="♟"){
+
+        if(sc==c && dr==1 && board[r][c]=="")
+            return true;
+
+        if(sr==1 &&
+           sc==c &&
+           dr==2 &&
+           board[2][c]=="" &&
+           board[3][c]=="")
+            return true;
+
+        if(Math.abs(dc)==1 &&
+           dr==1 &&
+           isWhite(board[r][c]))
+            return true;
+    }
+
+    if(piece=="♘" || piece=="♞"){
+
+        if(
+            (Math.abs(dr)==2 && Math.abs(dc)==1) ||
+            (Math.abs(dr)==1 && Math.abs(dc)==2)
+        ){
+            return true;
+        }
+    }
+
+    if(piece=="♖" || piece=="♜"){
+
+        if(sr==r || sc==c)
+            return true;
+    }
+
+    return false;
+}
+
 function clickSquare(r,c){
 
     let piece = board[r][c];
 
-    if(selected == null){
+    if(selected==null){
 
-        if(piece == "") return;
+        if(piece=="") return;
 
-        if(whiteTurn && !isWhite(piece)) return;
+        if(whiteTurn && !isWhite(piece))
+            return;
 
-        if(!whiteTurn && !isBlack(piece)) return;
+        if(!whiteTurn && !isBlack(piece))
+            return;
 
         selected = {
             row:r,
@@ -130,19 +195,62 @@ function clickSquare(r,c){
 
     }else{
 
-        board[r][c] =
+        if(
+            selected.row==r &&
+            selected.col==c
+        ){
+            selected = null;
+            drawBoard();
+            return;
+        }
+
+        let moving =
         board[selected.row][selected.col];
 
-        board[selected.row][selected.col] = "";
+        let target =
+        board[r][c];
+
+        if(
+            isWhite(moving) &&
+            isWhite(target)
+        ){
+            selected = null;
+            drawBoard();
+            return;
+        }
+
+        if(
+            isBlack(moving) &&
+            isBlack(target)
+        ){
+            selected = null;
+            drawBoard();
+            return;
+        }
+
+        if(
+            legalMove(
+                selected.row,
+                selected.col,
+                r,
+                c,
+                moving
+            )
+        ){
+
+            board[r][c] = moving;
+
+            board[selected.row][selected.col] = "";
+
+            whiteTurn = !whiteTurn;
+
+            document.getElementById("turn").innerHTML =
+            whiteTurn ?
+            "White's Turn" :
+            "Black's Turn";
+        }
 
         selected = null;
-
-        whiteTurn = !whiteTurn;
-
-        document.getElementById("turn").innerHTML =
-        whiteTurn ?
-        "White's Turn" :
-        "Black's Turn";
     }
 
     drawBoard();
@@ -150,42 +258,42 @@ function clickSquare(r,c){
 
 function drawBoard(){
 
-    let boardDiv =
+    let b =
     document.getElementById("board");
 
-    boardDiv.innerHTML = "";
+    b.innerHTML = "";
 
     for(let r=0;r<8;r++){
 
         for(let c=0;c<8;c++){
 
-            let square =
+            let sq =
             document.createElement("div");
 
-            square.classList.add("square");
+            sq.classList.add("square");
 
-            if((r+c)%2==0){
-                square.classList.add("white");
-            }else{
-                square.classList.add("black");
+            if((r+c)%2==0)
+                sq.classList.add("white");
+            else
+                sq.classList.add("black");
+
+            if(
+                selected &&
+                selected.row==r &&
+                selected.col==c
+            ){
+                sq.classList.add("selected");
             }
 
-            if(selected &&
-               selected.row==r &&
-               selected.col==c){
+            sq.innerHTML = board[r][c];
 
-                square.classList.add("selected");
-            }
+            sq.onclick = function(){
 
-            square.innerHTML =
-            board[r][c];
-
-            square.onclick =
-            function(){
                 clickSquare(r,c);
+
             };
 
-            boardDiv.appendChild(square);
+            b.appendChild(sq);
         }
     }
 }
@@ -196,4 +304,4 @@ drawBoard();
 
 </body>
 </html>
-
+```
